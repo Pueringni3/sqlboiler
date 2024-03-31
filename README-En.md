@@ -6,22 +6,12 @@
 ![ActionsCI](https://github.com/volatiletech/sqlboiler/workflows/test/badge.svg)
 [![Go Report Card](https://goreportcard.com/badge/volatiletech/sqlboiler)](http://goreportcard.com/report/volatiletech/sqlboiler)
 
-# 注意
+SQLBoiler is a tool to generate a Go ORM tailored to your database schema.
 
-- このレポジトリは日本のユーザに向けて、READMEなどを日本語に翻訳したものです。
-- 翻訳は大いに意訳を含みます。気になる記述は原文の英語を基準にしてください。
-- あくまで学習用としての利用に限り、ライブラリとして用いる場合はfork元の[sqlboiler](https://github.com/volatiletech/sqlboiler)のレポジトリを利用してください。
-- 誤訳や意味の分かりずらい部分が見つかればPRをもらえると助かります。
-
----
-
-> SQLBoiler is a tool to generate a Go ORM tailored to your database schema.
-SQLBoiler は データベースのスキーマに合わせたGo言語のORMを生成するツールです。
-
-> It is a "database-first" ORM as opposed to "code-first" (like gorm/gorp).
-そのため、SQLBoilerは「データベース・ファースト」なORMであり、gormやgorpのような「コード・ファースト」のものとは異なります。
-> That means you must first create your database schema. Please use something like [sql-migrate](https://github.com/rubenv/sql-migrate) or some other migration tool to manage this part of the database's life-cycle.
-そのため、まずはデータベースのスキーマを作成する必要があります。[sql-migrate](https://github.com/rubenv/sql-migrate)のようなmigrationツールを用いて、データベースのライフサイクルを管理するようにしてください。
+It is a "database-first" ORM as opposed to "code-first" (like gorm/gorp).
+That means you must first create your database schema. Please use something
+like [sql-migrate](https://github.com/rubenv/sql-migrate)
+or some other migration tool to manage this part of the database's life-cycle.
 
 # Note on versions
 
@@ -56,75 +46,64 @@ of that SQLBoiler also confers the following benefits:
 Table of Contents
 =================
 
-- [注意](#注意)
-- [Note on versions](#note-on-versions)
-  - [Why another ORM](#why-another-orm)
-- [Table of Contents](#table-of-contents)
-  - [About SQL Boiler](#about-sql-boiler)
-    - [Features](#features)
-    - [Missing features](#missing-features)
-    - [Supported Databases](#supported-databases)
-    - [A Small Taste](#a-small-taste)
-  - [Requirements \& Pro Tips](#requirements--pro-tips)
-    - [Requirements](#requirements)
-    - [Pro Tips](#pro-tips)
-  - [Getting started](#getting-started)
-      - [Videos](#videos)
-      - [Download](#download)
-      - [Configuration](#configuration)
-        - [Database Driver Configuration](#database-driver-configuration)
-        - [Generic config options](#generic-config-options)
-        - [Full Example](#full-example)
-      - [Initial Generation](#initial-generation)
-      - [Regeneration](#regeneration)
-      - [Controlling Generation](#controlling-generation)
-        - [Aliases](#aliases)
-        - [Custom Struct Tag Case](#custom-struct-tag-case)
-        - [Foreign Keys](#foreign-keys)
-        - [Inflections](#inflections)
-        - [Types](#types)
-        - [Imports](#imports)
-        - [Templates](#templates)
-      - [Extending generated models](#extending-generated-models)
-  - [Diagnosing Problems](#diagnosing-problems)
-  - [Features \& Examples](#features--examples)
-    - [Automatic CreatedAt/UpdatedAt](#automatic-createdatupdatedat)
-      - [Customizing the timestamp columns](#customizing-the-timestamp-columns)
-      - [Skipping Automatic Timestamps](#skipping-automatic-timestamps)
-      - [Overriding Automatic Timestamps](#overriding-automatic-timestamps)
-    - [Automatic DeletedAt (Soft Delete)](#automatic-deletedat-soft-delete)
-    - [Query Building](#query-building)
-    - [Query Mod System](#query-mod-system)
-    - [Function Variations](#function-variations)
-    - [Finishers](#finishers)
-    - [Raw Query](#raw-query)
-    - [Binding](#binding)
-    - [Relationships](#relationships)
-    - [Hooks](#hooks)
-      - [Skipping Hooks](#skipping-hooks)
-    - [Transactions](#transactions)
-    - [Debug Logging](#debug-logging)
-    - [Select](#select)
-    - [Find](#find)
-    - [Insert](#insert)
-    - [Update](#update)
-    - [Delete](#delete)
-    - [Upsert](#upsert)
-    - [Reload](#reload)
-    - [Exists](#exists)
-    - [Enums](#enums)
-    - [Constants](#constants)
-  - [FAQ](#faq)
-      - [Won't compiling models for a huge database be very slow?](#wont-compiling-models-for-a-huge-database-be-very-slow)
-      - [Missing imports for generated package](#missing-imports-for-generated-package)
-      - [How should I handle multiple schemas?](#how-should-i-handle-multiple-schemas)
-      - [How do I use types.BytesArray for Postgres bytea arrays?](#how-do-i-use-typesbytesarray-for-postgres-bytea-arrays)
-      - [Why aren't my time.Time or null.Time fields working in MySQL?](#why-arent-my-timetime-or-nulltime-fields-working-in-mysql)
-      - [Where is the homepage?](#where-is-the-homepage)
-      - [Why are the auto-generated tests failing?](#why-are-the-auto-generated-tests-failing)
-  - [Benchmarks](#benchmarks)
-    - [Results (lower is better)](#results-lower-is-better)
-  - [Third-Party Extensions](#third-party-extensions)
+  * [SQLBoiler](#sqlboiler)
+    * [Why another ORM](#why-another-orm)
+    * [About SQL Boiler](#about-sql-boiler)
+      * [Features](#features)
+      * [Missing Features](#missing-features)
+      * [Supported Databases](#supported-databases)
+      * [A Small Taste](#a-small-taste)
+    * [Requirements &amp; Pro Tips](#requirements--pro-tips)
+      * [Requirements](#requirements)
+      * [Pro Tips](#pro-tips)
+    * [Getting started](#getting-started)
+        * [Videos](#videos)
+        * [Download](#download)
+        * [Configuration](#configuration)
+        * [Initial Generation](#initial-generation)
+        * [Regeneration](#regeneration)
+        * [Controlling Generation](#controlling-generation)
+          * [Aliases](#aliases)
+          * [Types](#types)
+          * [Imports](#imports)
+          * [Templates](#templates)
+        * [Extending Generated Models](#extending-generated-models)
+    * [Diagnosing Problems](#diagnosing-problems)
+    * [Features &amp; Examples](#features--examples)
+      * [Automatic CreatedAt/UpdatedAt](#automatic-createdatupdatedat)
+        * [Skipping Automatic Timestamps](#skipping-automatic-timestamps)
+        * [Overriding Automatic Timestamps](#overriding-automatic-timestamps)
+      * [Query Building](#query-building)
+      * [Query Mod System](#query-mod-system)
+      * [Function Variations](#function-variations)
+      * [Finishers](#finishers)
+      * [Raw Query](#raw-query)
+      * [Binding](#binding)
+      * [Relationships](#relationships)
+      * [Hooks](#hooks)
+        * [Skipping Hooks](#skipping-hooks)
+      * [Transactions](#transactions)
+      * [Debug Logging](#debug-logging)
+      * [Select](#select)
+      * [Find](#find)
+      * [Insert](#insert)
+      * [Update](#update)
+      * [Delete](#delete)
+      * [Upsert](#upsert)
+      * [Reload](#reload)
+      * [Exists](#exists)
+      * [Enums](#enums)
+      * [Constants](#constants)
+    * [FAQ](#faq)
+        * [Won't compiling models for a huge database be very slow?](#wont-compiling-models-for-a-huge-database-be-very-slow)
+        * [Missing imports for generated package](#missing-imports-for-generated-package)
+        * [How should I handle multiple schemas](#how-should-i-handle-multiple-schemas)
+        * [How do I use the types.BytesArray for Postgres bytea arrays?](#how-do-i-use-typesbytesarray-for-postgres-bytea-arrays)
+        * [Why aren't my time.Time or null.Time fields working in MySQL?](#why-arent-my-timetime-or-nulltime-fields-working-in-mysql)
+        * [Where is the homepage?](#where-is-the-homepage)
+        * [Why are the auto-generated tests failing?](#why-are-the-auto-generated-tests-failing)
+  * [Benchmarks](#benchmarks)
+  * [Third-Party Extensions](#third-party-extensions)
 
 ## About SQL Boiler
 
