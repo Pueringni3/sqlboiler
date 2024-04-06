@@ -16,29 +16,52 @@
 ---
 
 > SQLBoiler is a tool to generate a Go ORM tailored to your database schema.
-SQLBoiler は データベースのスキーマに合わせたGo言語のORMを生成するツールです。
+
+SQLBoilerはデータベースのスキーマに合わせてGoのORMを生成するツールです。
 
 > It is a "database-first" ORM as opposed to "code-first" (like gorm/gorp).
-そのため、SQLBoilerは「データベース・ファースト」なORMであり、gormやgorpのような「コード・ファースト」のものとは異なります。
-> That means you must first create your database schema. Please use something like [sql-migrate](https://github.com/rubenv/sql-migrate) or some other migration tool to manage this part of the database's life-cycle.
-そのため、まずはデータベースのスキーマを作成する必要があります。[sql-migrate](https://github.com/rubenv/sql-migrate)のようなmigrationツールを用いて、データベースのライフサイクルを管理するようにしてください。
+> That means you must first create your database schema. Please use something
+> like [sql-migrate](https://github.com/rubenv/sql-migrate)
+> or some other migration tool to manage this part of the database's life-cycle.
+
+つまり「データベース・ファースト」なORMであり、この点でgormやgorpなどの「コード・ファースト」とは対照的です。
+そのため、まず最初にデータベースのスキーマを作成する必要があります。
+「[sql-migrate](https://github.com/volatiletech/sqlboiler)」のようなマイグレーションツールを用いて、データベースのライフサイクルを管理するようにしてください。
 
 # Note on versions
 
-v1, v2, and v3 are no longer maintained.
+> v1, v2, and v3 are no longer maintained.
 
-v3 is the last GOPATH-compatible version.
+v1, v2, v3のバージョンは既にメンテナンスされていません。
 
-v4 has no real breaking changes between v3 and itself other than Go modules
-and is the only maintained version. Note this does not work with GOPATH
-projects.
+> v3 is the last GOPATH-compatible version.
+
+v3が最新のGOPATHの互換性があるバージョンです。
+
+> v4 has no real breaking changes between v3 and itself other than Go modules
+> and is the only maintained version. Note this does not work with GOPATH
+> projects.
+
+v4にはv3とGoモジュールを除いて破壊的な後方互換性は含まれていませんが、現在はv4のみがメンテナンスされています。
+そのため、GOPATHのプロジェクトでは動作しません。
 
 ## Why another ORM
 
-While attempting to migrate a legacy Rails database, we realized how much ActiveRecord benefited us in terms of development velocity.
-Coming over to the Go `database/sql` package after using ActiveRecord feels extremely repetitive, super long-winded and down-right boring.
-Being Go veterans we knew the state of ORMs was shaky, and after a quick review we found what our fears confirmed. Most packages out
-there are code-first, reflect-based and have a very weak story around relationships between models. So with that we set out with these goals:
+> While attempting to migrate a legacy Rails database, we realized how much ActiveRecord benefited us in terms of development velocity.
+
+昔のRailsデータベースのマイグレーションをしようとすると、「ActiveRecord」の有益さを開発速度の点で感じられます。
+
+> Coming over to the Go `database/sql` package after using ActiveRecord feels extremely repetitive, super long-winded and down-right boring.
+
+ActiveRecordを使った後にGo標準の`database/sql`パッケージを使うと、繰り返しが非常に多く、記述も冗長になり、退屈に感じてしまいます。
+
+> Being Go veterans we knew the state of ORMs was shaky, and after a quick review we found what our fears confirmed. 
+
+Go言語のベテランである我々は、ORMの状態が不安定であることを知っていました。
+
+> Most packages out there are code-first, reflect-based and have a very weak story around relationships between models. So with that we set out with these goals:
+
+世に出回っているORMパッケージのほとんどは、コードファーストで、リフレクションベースで、モデル間のリレーションシップに関するストーリーが非常に弱いです。そのため、私たちは次のような目標を掲げました。
 
 * Work with existing databases: Don't be the tool to define the schema, that's better left to other tools.
 * ActiveRecord-like productivity: Eliminate all sql boilerplate, have relationships as a first-class concept.
